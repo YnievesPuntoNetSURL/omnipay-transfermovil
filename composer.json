@@ -1,5 +1,5 @@
 {
-    "name": "ynievesdotnetteam/omnipay-transfermovil",
+    "name": "ynievespuntonetsurl/omnipay-transfermovil",
     "type": "library",
     "description": "Transfermovil gateway for Omnipay payment processing library",
     "keywords": [
@@ -11,7 +11,7 @@
         "Transfermovil",
         "purchase"
     ],
-    "homepage": "https://github.com/ynievesdotnetteam/omnipay-Transfermovil",
+    "homepage": "https://github.com/ynievespuntonetsurl/omnipay-Transfermovil",
     "license": "MIT",
     "authors": [
         {
