@@ -7,11 +7,11 @@ processing library for PHP. This package implements PayPal support for Omnipay.
 
 ## Installation
 
-Omnipay is installed via [Composer](http://getcomposer.org/). To install, simply require `ynievesdotnetteam/omnipay-transfermovil` with Composer:
+Omnipay is installed via [Composer](http://getcomposer.org/). To install, simply require `ynievespuntonetsurl/omnipay-transfermovil` with Composer:
 
 ```bash
 #!/bin/bash
-composer require ynievesdotnetteam/omnipay-transfermovil
+composer require ynievespuntonetsurl/omnipay-transfermovil
 ```
 
 ## Basic Usage
