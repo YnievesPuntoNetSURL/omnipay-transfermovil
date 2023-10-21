@@ -7,7 +7,11 @@ use Omnipay\Common\Message\AbstractRequest;
 
 abstract class AbstractRequestImp extends AbstractRequest
 {
-    protected $endpointURL = 'https://200.13.144.60:15001';
+    protected $endpointTestURL = 'https://200.13.144.60:15001';
+
+    protected $endpointProdURL = 'https://200.13.144.60:15000';
+
+    protected $endpointURL = '';
 
     public function getData()
     {
@@ -24,19 +28,14 @@ abstract class AbstractRequestImp extends AbstractRequest
         return $this->getParameter('entity_Id');
     }
 
-    public function getUsername()
-    {
-        return $this->getParameter('username');
-    }
-
     public function setUsername($value)
     {
         return $this->setParameter('username', $value);
     }
 
-    public function getPassword()
+    public function getUsername()
     {
-        return $this->getParameter('password');
+        return $this->getParameter('username');
     }
 
     public function setPassword($value)
@@ -44,22 +43,31 @@ abstract class AbstractRequestImp extends AbstractRequest
         return $this->setParameter('password', $value);
     }
 
+    public function getPassword()
+    {
+        return $this->getParameter('password');
+    }
+
+    public function setDemoMode($value)
+    {
+        return $this->setParameter('demo_mode', $value);
+    }
+
+    public function getDemoMode()
+    {
+        return $this->getParameter('demo_mode');
+    }
+
     protected function getEndpoint($service, $endpoint = '')
     {
         if ($endpoint != '') {
             $service .= $endpoint;
         }
+        $this->endpointURL = $this->getDemoMode() ? $this->endpointTestURL : $this->endpointProdURL;
 
         return $this->endpointURL.$service;
     }
 
-    /**
-     * Get HTTP Method.
-     *
-     * This is nearly always POST but can be over-ridden in sub classes.
-     *
-     * @return string
-     */
     protected function getHttpMethod()
     {
         return 'POST';
@@ -68,8 +76,6 @@ abstract class AbstractRequestImp extends AbstractRequest
     public function sendData($data)
     {
         $data['data'] = (array_key_exists("data",$data)) ? $data['data'] ?: [] : [];
-        // Guzzle HTTP Client createRequest does funny things when a GET request
-        // has attached data, so don't send the data if the method is GET.
         $options = JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK;
         
         if ($this->getHttpMethod() == 'GET') {
@@ -80,13 +86,6 @@ abstract class AbstractRequestImp extends AbstractRequest
             $body = $this->toJSON($data['data'], $options);
         }
 
-        // Might be useful to have some debug code here, Enzona especially can be
-        // a bit fussy about data formats and ordering.  Perhaps hook to whatever
-        // logging engine is being used.
-        // TODO: Uncomment to debug request
-        // echo 'Data == '.json_encode($data)."\n";
-        // echo 'Request URL == '.$requestUrl."\n";
-        // echo 'Body == '.$body."\n";
         try {
             date_default_timezone_set("America/Havana");
 
@@ -109,7 +108,6 @@ abstract class AbstractRequestImp extends AbstractRequest
                 $body
             );
             
-            // Empty response body should be parsed also as and empty array
             $body = (string) $httpResponse->getBody()->getContents();
             $jsonToArrayResponse = ! empty($body) ? json_decode($body, true) : [];
 

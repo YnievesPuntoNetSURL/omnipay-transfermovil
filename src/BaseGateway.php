@@ -8,14 +8,10 @@ use GuzzleHttp\Client as GuzzleHttpClient;
 
 class BaseGateway extends AbstractGateway
 {
-    protected $endpointURL = 'https://200.13.144.60:5001/';
+    protected $endpointTestURL = 'https://200.13.144.60:15001/';
 
-    /**
-     * Create a new gateway instance
-     *
-     * @param Client          $httpClient  A HTTP client to make API calls with
-     * @param HttpRequest     $httpRequest A Symfony HTTP request object
-     */
+    protected $endpointProdURL = 'https://200.13.144.60:15000/';
+
     public function __construct(Client $httpClient = null, HttpRequest $httpRequest = null)
     {
         $httpClient = $httpClient ?: new Client(new GuzzleHttpClient(['verify'=>false]));
@@ -23,7 +19,6 @@ class BaseGateway extends AbstractGateway
         $this->httpRequest = $httpRequest ?: $this->getDefaultHttpRequest();
         $this->initialize();
     }
-
 
     public function getName()
     {
@@ -59,19 +54,7 @@ class BaseGateway extends AbstractGateway
     {
         return $this->setParameter('password', $value);
     }
-    
-   /**
-     * Create Request
-     *
-     * This overrides the parent createRequest function ensuring that the OAuth
-     * 2.0 access token is passed along with the request data -- unless the
-     * request is a AccessTokenRequest in which case no token is needed.  If no
-     * token is available then a new one is created (e.g. if there has been no
-     * token request or the current token has expired).
-     *
-     * @param  string  $class
-     * @return \Omnipay\Enzona\Message\AbstractRestRequest
-     */
+
     public function createRequest($class, array $parameters = [])
     {
         $parameters['Username'] = $this->getUsername();

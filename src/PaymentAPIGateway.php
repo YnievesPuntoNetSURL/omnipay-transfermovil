@@ -4,19 +4,19 @@ namespace Omnipay\Transfermovil;
 
 class PaymentAPIGateway extends BaseGateway
 {
-    
-    // /**
-    //  * @return array
-    //  */
-    // public function getDefaultParameters()
-    // {
-    //     return array();
-    // }
-
-
     public function getName()
     {
         return 'PaymentAPIGateway';
+    }
+
+    public function setDemoMode($value)
+    {
+        return $this->setParameter('demo_mode', $value);
+    }
+
+    public function getDemoMode()
+    {
+        return $this->getParameter('demo_mode');
     }
 
     public function SendPayOrderRequest(array $parameters = array())
@@ -28,7 +28,6 @@ class PaymentAPIGateway extends BaseGateway
     {
         return $this->createRequest('\Omnipay\Transfermovil\UseCases\Queries\GetOrderStatus\GetOrderStatusRequest', $parameters);
     }
-
 
     public function requestBalance(array $parameters = array())
     {
